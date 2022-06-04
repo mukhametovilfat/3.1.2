@@ -25,7 +25,6 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(name = "age", nullable = false)
-    @Min(value = 1)
     private int age;
 
     @Column(name = "username")
