@@ -3,9 +3,7 @@ package ru.kata.spring.boot_security.demo.model;
 import org.hibernate.annotations.Check;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.util.Collection;
 import java.util.Set;
 
@@ -33,9 +31,10 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"))
+
     private Set<Role> roleSet;
 
     public void setFirstName(String firstName) {

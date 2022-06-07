@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,20 +9,22 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
+
 
 @Controller
 public class UserController {
 
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+
+    public UserController(RoleService roleService, UserService userService, Set<Role> roleSet) {
+        this.roleService = roleService;
+        this.userService = userService;
+
+    }
 
     @GetMapping(value = "/admin")
     public String listUsers(Model model) {
@@ -53,7 +54,7 @@ public class UserController {
     @PostMapping
     public String addUser(@ModelAttribute("user") User user) {
         try {
-            userService.add(user);
+            userService.createUser(user);
         } catch (Exception e) {
             //ignored
         }
@@ -75,16 +76,14 @@ public class UserController {
         return "edit";
     }
 
-    @PatchMapping("/admin/user/{id}")
+    @PatchMapping ("/admin/user/{id}")
     public String editUser(@ModelAttribute("user") User user, @RequestParam("allRoles") String[] roles) {
-        try {
-            Set<Role> roleSet = Arrays.stream(roles)
-                    .map(roleService::getRoleByName)
-                    .collect(Collectors.toSet());
-            userService.update(user, roleSet);
-        } catch (Exception e) {
-            //ignored
-        }
+
+        Set<Role> userRoles = new HashSet<>();
+        for (String id : roles){
+        userRoles.add(roleService.getRoleByName(id));
+        userService.update(user,userRoles);}
+
         return "redirect:/admin";
     }
 
