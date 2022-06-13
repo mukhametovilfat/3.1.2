@@ -4,38 +4,44 @@
     <meta charset="UTF-8">
     <title>Edit User</title>
 </head>
+
 <body>
+<h1>Update user page</h1>
+
 <form th:method="PATCH" th:action="@{/admin/user/{id}(id=${user.getId()})}" th:object="${user}">
-    <label for="firstName">First name</label>
-    <input type="text" th:field="*{firstName}" id="firstName"/>
+    <label for="id">ID</label>
+    <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
     <br/><br/>
-    <label for="lastName">Last Name</label>
-    <input type="text" th:field="*{lastName}" id="lastName"/>
+    <label for="username">Username</label>
+    <input type="text" th:field="*{username}" id="username" placeholder="Username">
+    <br/><br/>
+    <label for="password">Password</label>
+    <input type="text" th:field="*{password}" id="password" placeholder="Password">
+    <br/><br/>
+    <label for="firstName">First name</label>
+    <input type="text" th:field="*{firstName}" id="firstName" placeholder="First Name">
+    <br/><br/>
+    <label for="lastName">Last name</label>
+    <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
     <br/><br/>
     <label for="age">Age</label>
-    <input type="text" th:field="*{age}" id="age"/>
-    <br/><br/><br/>
-    <br>
-    <label for="username">Username</label>
-    <input type="text" th:field="*{username}" id="username"/>
+    <input type="text" th:field="*{age}" id="age" placeholder="Age">
     <br/>
-    <br>
-    <label for="password">Password</label>
-    <input type="text" th:field="*{password}" id="password"/>
     <br/>
-    <br>
-    <br/>
-    <br>
     <label>Roles:</label>
-    <ul>
-        <li th:each="role : ${allRoles}">
-            <input th:checked="${userRoles.contains(role.getName())}" th:text="${role.getName()}"
-                   th:value="${role.getName()}" type="checkbox" name="allRoles">
-        </li>
-    </ul>
-    <input type="submit" value="Edit User"/>
+        <br/>
+    <label>
+        <select size="3" name="allRoles" id="roleSet" multiple="multiple">
+            <option disabled>Roles:</option>
+            <option value="ROLE_ADMIN">ADMIN</option>
+            <option selected value="ROLE_USER">USER</option>
+        </select>
+    </label>
+    <br/>
+    <input type="submit" value="Update User">
+
 </form>
-<br>
-<div th:replace="logging_out_template :: logout"></div>
-</body>
-</html>
+<br/>
+<form th:action="@{/logout}">
+    <input type="submit" value="LOGOUT"/>
+</form>

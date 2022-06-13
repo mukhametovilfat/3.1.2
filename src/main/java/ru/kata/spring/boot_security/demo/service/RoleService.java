@@ -6,7 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 
 public interface RoleService {
-    List<Role> findAll();
+
+    HashSet<Role> findAll(String[] roles);
+
     Role getRoleByName(String name);
+
+    List<Role> getAllRoles();
 
 }
